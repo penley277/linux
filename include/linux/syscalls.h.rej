@@ -1,0 +1,19 @@
+diff a/include/linux/syscalls.h b/include/linux/syscalls.h	(rejected hunks)
+@@ -69,6 +69,7 @@ struct io_uring_params;
+ struct clone_args;
+ struct open_how;
+ struct mount_attr;
++struct xrp_stats;
+ 
+ #include <linux/types.h>
+ #include <linux/aio_abi.h>
+@@ -1364,6 +1367,9 @@ long compat_ksys_semtimedop(int semid, struct sembuf __user *tsems,
+ 			    unsigned int nsops,
+ 			    const struct old_timespec32 __user *timeout);
+ 
++asmlinkage long sys_print_xrp_stats(struct xrp_stats __user *buf);
++asmlinkage long sys_test_xrp(char __user *data_buf, char __user *scratch_buf, unsigned int bpf_fd);
++
+ int __sys_getsockopt(int fd, int level, int optname, char __user *optval,
+ 		int __user *optlen);
+ int __sys_setsockopt(int fd, int level, int optname, char __user *optval,

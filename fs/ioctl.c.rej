@@ -1,0 +1,10 @@
+diff a/fs/ioctl.c b/fs/ioctl.c	(rejected hunks)
+@@ -19,6 +19,8 @@
+ #include <linux/falloc.h>
+ #include <linux/sched/signal.h>
+ #include <linux/fiemap.h>
++#include <linux/bpf.h>
++#include <linux/filter.h>
+ 
+ #include "internal.h"
+ 

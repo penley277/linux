@@ -13,6 +13,7 @@
 #include <linux/list_sort.h>
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
+#include <linux/rwlock.h>
 #include "ext4.h"
 
 #include <trace/events/ext4.h>
@@ -823,6 +824,9 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
 
 out:
 	tree->cache_es = es;
+
+	xrp_sync_ext4_extent(inode, false);
+
 	return 0;
 }
 
@@ -1453,6 +1457,9 @@ out_get_reserved:
 	if (count_reserved)
 		*reserved = get_rsvd(inode, end, es, &rc);
 out:
+
+	xrp_sync_ext4_extent(inode, false);
+
 	return err;
 }
 

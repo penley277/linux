@@ -1,0 +1,18 @@
+diff a/include/linux/blkdev.h b/include/linux/blkdev.h	(rejected hunks)
+@@ -26,6 +26,7 @@
+ #include <linux/scatterlist.h>
+ #include <linux/blkzoned.h>
+ #include <linux/pm.h>
++#include <linux/nvme.h>
+ 
+ struct module;
+ struct scsi_ioctl_command;
+@@ -233,6 +234,8 @@ struct request {
+ 		u64 fifo_time;
+ 	};
+ 
++	struct nvme_command *xrp_command;
++
+ 	/*
+ 	 * completion callback.
+ 	 */

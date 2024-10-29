@@ -1,0 +1,11 @@
+diff a/include/linux/fs.h b/include/linux/fs.h	(rejected hunks)
+@@ -321,6 +321,9 @@ enum rw_hint {
+ 
+ struct kiocb {
+ 	struct file		*ki_filp;
++	bool			xrp_enabled;
++	char __user		*xrp_scratch_buf;
++	unsigned int		xrp_bpf_fd;
+ 
+ 	/* The 'ki_filp' pointer is shared in a union for aio */
+ 	randomized_struct_fields_start

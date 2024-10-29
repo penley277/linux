@@ -375,6 +375,9 @@
 451	common	cachestat		sys_cachestat
 452	common	fchmodat2		sys_fchmodat2
 453	64	map_shadow_stack	sys_map_shadow_stack
+454     common  print_xrp_stats         sys_print_xrp_stats
+455     common  read_xrp                sys_read_xrp
+456     common  test_xrp                sys_test_xrp
 
 #
 # Due to a historical design error, certain syscalls are numbered differently

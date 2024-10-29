@@ -1,0 +1,19 @@
+diff a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c	(rejected hunks)
+@@ -3121,6 +3121,9 @@ static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off,
+ 		 */
+ 		*reg_type = info.reg_type;
+ 
++		if (*reg_type == PTR_TO_MEM) {
++			env->insn_aux_data[insn_idx].mem_size = info.mem_size;
++		}
+ 		if (*reg_type == PTR_TO_BTF_ID || *reg_type == PTR_TO_BTF_ID_OR_NULL) {
+ 			*btf = info.btf;
+ 			*btf_id = info.btf_id;
+@@ -3474,7 +3477,6 @@ int check_ctx_reg(struct bpf_verifier_env *env,
+ 	/* Access to ctx or passing it to a helper is only allowed in
+ 	 * its original, unmodified form.
+ 	 */
+-
+ 	if (reg->off) {
+ 		verbose(env, "dereference of modified ctx ptr R%d off=%d disallowed\n",
+ 			regno, reg->off);

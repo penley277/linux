@@ -1,0 +1,15 @@
+diff a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c	(rejected hunks)
+@@ -155,6 +155,13 @@ static void iomap_dio_bio_end_io(struct bio *bio)
+ 	struct iomap_dio *dio = bio->bi_private;
+ 	bool should_dirty = (dio->flags & IOMAP_DIO_DIRTY);
+ 
++	if (bio->xrp_enabled) {
++		put_page(bio->xrp_scratch_page);
++		bio->xrp_scratch_page = NULL;
++		bpf_prog_put(bio->xrp_bpf_prog);
++		bio->xrp_bpf_prog = NULL;
++	}
++
+ 	if (bio->bi_status)
+ 		iomap_dio_set_error(dio, blk_status_to_errno(bio->bi_status));
+ 

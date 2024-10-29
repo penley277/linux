@@ -28,6 +28,8 @@
 #include <linux/io-64-nonatomic-hi-lo.h>
 #include <linux/sed-opal.h>
 #include <linux/pci-p2pdma.h>
+#include <linux/bpf.h>
+#include <linux/filter.h>
 
 #include "trace.h"
 #include "nvme.h"
@@ -903,6 +905,7 @@ static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
 static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct request **rqlist)
 {
 	spin_lock(&nvmeq->sq_lock);
+	unsigned long flags;
 	while (!rq_list_empty(*rqlist)) {
 		struct request *req = rq_list_pop(rqlist);
 		struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
@@ -910,7 +913,8 @@ static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct request **rqlist)
 		nvme_sq_copy_cmd(nvmeq, &iod->cmd);
 	}
 	nvme_write_sq_db(nvmeq, true);
-	spin_unlock(&nvmeq->sq_lock);
+        # spin_unlock(&nvmeq->sq_lock);
+	spin_unlock_irqrestore(&nvme->sq_lock, flags);
 }
 
 static bool nvme_prep_rq_batch(struct nvme_queue *nvmeq, struct request *req)
